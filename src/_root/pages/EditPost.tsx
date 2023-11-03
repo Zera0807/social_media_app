@@ -1,8 +1,13 @@
 import PostForm from "@/components/forms/PostForm";
+import { useGetPostById } from "@/lib/react-query/queriesAndMutations";
+import { Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 const EditPost = () => {
   const { id } = useParams();
+  const { data: post, isPending } = useGetPostById(id || "");
+
+  if (isPending) return <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
 
   return (
     <div className="flex flex-1">
@@ -17,7 +22,7 @@ const EditPost = () => {
           <h2 className="h3-bold md:h2-bold text-left w-full">Edit Post</h2>
         </div>
 
-        <PostForm />
+        <PostForm action="Update" post={post} />
       </div>
     </div>
   );
